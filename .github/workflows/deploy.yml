@@ -24,7 +24,8 @@ jobs:
       with:
         context: .
         push: true
-        tags: yourdockerhub/flask-devops-app:latest
+        tags: nicorehov/flask-devops-app:latest
+
 
     - name: Deploy to VPS via SSH
       uses: appleboy/ssh-action@v0.1.6
