@@ -27,15 +27,3 @@ jobs:
         tags: nicorehov/flask-devops-app:latest
 
 
-    - name: Deploy to VPS via SSH
-      uses: appleboy/ssh-action@v0.1.6
-      with:
-        host: ${{ secrets.SERVER_IP }}
-        username: ${{ secrets.SERVER_USER }}
-        key: ${{ secrets.SERVER_SSH_KEY }}
-        script: |
-          docker stop flask-devops-app || true
-          docker rm flask-devops-app || true
-          docker pull nicorehov/flask-devops-app:latest
-          docker run -d -p 5000:5000 --name flask-devops-app nicorehov/flask-devops-app:latest
-
