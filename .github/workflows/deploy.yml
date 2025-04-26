@@ -36,6 +36,6 @@ jobs:
         script: |
           docker stop flask-devops-app || true
           docker rm flask-devops-app || true
-          docker pull yourdockerhub/flask-devops-app:latest
-          docker run -d -p 5000:5000 --name flask-devops-app yourdockerhub/flask-devops-app:latest
+          docker pull nicorehov/flask-devops-app:latest
+          docker run -d -p 5000:5000 --name flask-devops-app nicorehov/flask-devops-app:latest
 
