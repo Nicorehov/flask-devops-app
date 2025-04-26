@@ -1,4 +1,4 @@
-name: Deploy to VPS
+name: Build and Deploy to VPS
 
 on:
   push:
@@ -6,21 +6,35 @@ on:
       - main
 
 jobs:
-  deploy:
+  build-and-deploy:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout repo
-        uses: actions/checkout@v3
+    - name: Checkout code
+      uses: actions/checkout@v3
 
-      - name: Deploy via SSH
-        uses: appleboy/ssh-action@v0.1.6
-        with:
-          host: ${{ secrets.SERVER_IP }}
-          username: ${{ secrets.SERVER_USER }}
-          key: ${{ secrets.SERVER_SSH_KEY }}
-          script: |
-            docker stop flask-devops-app || true
-            docker rm flask-devops-app || true
-            docker pull yourdockerhub/flask-devops-app
-            docker run -d -p 5000:5000 --name flask-devops-app yourdockerhub/flask-devops-app
+    - name: Log in to DockerHub
+      uses: docker/login-action@v3
+      with:
+        username: ${{ secrets.DOCKER_USERNAME }}
+        password: ${{ secrets.DOCKER_PASSWORD }}
+
+    - name: Build and push Docker image
+      uses: docker/build-push-action@v5
+      with:
+        context: .
+        push: true
+        tags: yourdockerhub/flask-devops-app:latest
+
+    - name: Deploy to VPS via SSH
+      uses: appleboy/ssh-action@v0.1.6
+      with:
+        host: ${{ secrets.SERVER_IP }}
+        username: ${{ secrets.SERVER_USER }}
+        key: ${{ secrets.SERVER_SSH_KEY }}
+        script: |
+          docker stop flask-devops-app || true
+          docker rm flask-devops-app || true
+          docker pull yourdockerhub/flask-devops-app:latest
+          docker run -d -p 5000:5000 --name flask-devops-app yourdockerhub/flask-devops-app:latest
+
