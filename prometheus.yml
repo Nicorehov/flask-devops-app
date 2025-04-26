@@ -1,9 +1,7 @@
-global:
-  scrape_interval: 5s
-
 scrape_configs:
-  - job_name: 'flask-app'
-    metrics_path: /health
+  - job_name: 'flask-devops-app'
+    metrics_path: /metrics
     static_configs:
-      - targets: ['host.docker.internal:5000']
+      - targets: ['flask-devops-app-production.up.railway.app']
+
 
