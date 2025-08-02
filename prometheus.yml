@@ -4,4 +4,6 @@ scrape_configs:
     static_configs:
       - targets: ['flask-devops-app-production.up.railway.app']
 
-
+  - job_name: 'cadvisor'
+    static_configs:
+      - targets: ['cadvisor:8080']
