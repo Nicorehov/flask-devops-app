@@ -1,1 +1,1 @@
-https://flask-devops-app-production.up.railway.app/
+Run this locally with docker-compose up --build -d
